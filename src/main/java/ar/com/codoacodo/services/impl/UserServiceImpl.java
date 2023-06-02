@@ -1,5 +1,7 @@
 package ar.com.codoacodo.services.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import ar.com.codoacodo.domain.User;
@@ -35,4 +37,19 @@ public class UserServiceImpl implements UserService {
 		return this.repository.findById(id).get();
 	}
 
+	@Override
+	public List<User> buscarTodos() {
+		return this.repository.findAll();
+	}
+
+	@Override
+	public User buscarUserPorUsername(String username) {
+		//select * from tabla where username = 'username'
+		return this.repository.findByUsername(username);
+	}
+	
+	@Override
+	public void eliminarUser(Long id) {
+		this.repository.deleteById(id);
+	}
 }

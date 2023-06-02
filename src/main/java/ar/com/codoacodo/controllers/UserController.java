@@ -1,6 +1,9 @@
 package ar.com.codoacodo.controllers;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,11 +39,32 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 	
+	//GET
+	@GetMapping()	
+	public ResponseEntity<List<User>> findAll() {
+		
+		List<User> user = this.userService.buscarTodos();
+		
+		//http status code=200
+		return ResponseEntity.ok(user);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<UserResponseDTO> createUser(
 			@RequestBody UserRequestDTO request
 		)  {
 		
+		//verifico si existe
+		User user = this.userService.buscarUserPorUsername(request.getUsername());
+		if(user != null) {
+			UserResponseDTO response = UserResponseDTO.builder()
+				.username(user.getUsername())
+				.build();
+			
+			return ResponseEntity.ok(response);
+		}
+		
+		//sino lo crea
 		//validacion!!!
 		User newUser = User.builder()
 				.username(request.getUsername())
@@ -55,4 +79,23 @@ public class UserController {
 		
 		return ResponseEntity.ok(response);
 	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> actualizar(
+			@PathVariable("id") Long id			
+		) {
+		
+		this.userService.eliminarUser(id);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	/*Idempotentes
+	 * user/1
+	{
+		alias: 'nuevoalias'
+		id: 2
+	}
+	 */
+	
 }
