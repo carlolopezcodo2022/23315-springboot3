@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.com.codoacodo.domain.User;
 import ar.com.codoacodo.dto.UserRequestDTO;
 import ar.com.codoacodo.dto.UserResponseDTO;
+import ar.com.codoacodo.dto.reqres.ListResource;
 import ar.com.codoacodo.services.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -97,5 +98,4 @@ public class UserController {
 		id: 2
 	}
 	 */
-	
 }
