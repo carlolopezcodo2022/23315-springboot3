@@ -11,4 +11,5 @@ public interface UserService {
 	public List<User> buscarTodos();
 	public User buscarUserPorUsername(String username);
 	public void eliminarUser(Long id);
+	public void actualizar(User user);
 }
