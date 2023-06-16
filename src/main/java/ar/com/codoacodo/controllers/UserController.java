@@ -1,6 +1,7 @@
 package ar.com.codoacodo.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.codoacodo.domain.User;
+import ar.com.codoacodo.dto.UserDTO;
 import ar.com.codoacodo.dto.UserRequestDTO;
 import ar.com.codoacodo.dto.UserRequestPutDTO;
 import ar.com.codoacodo.dto.UserResponseDTO;
@@ -33,14 +35,24 @@ public class UserController {
 	
 	//GET
 	@GetMapping("/{id}")	
-	public ResponseEntity<User> m1(
+	public ResponseEntity<UserDTO> m1(
 			@PathVariable("id") Long id
 			) {
 		
 		User user = this.userService.buscarUser(id);
 		
+		UserDTO dto = UserDTO.builder()
+			.id(user.getId())
+			.username(user.getUsername())
+			.roles(user.getRoles()
+					.stream()
+					.map(x -> x.getRol())
+					.collect(Collectors.toSet())
+			).build();
+			
+		
 		//http status code=200
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(dto);
 	}
 	
 	//GET

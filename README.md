@@ -6,3 +6,7 @@
 ## SPRING_DATASOURCE_USERNAME:postgres
 ## SPRING_DATASOURCE_PASSWORD:admin
 ## ENDPOINT_REQ_RES:https://reqres.in/api/unknown
+
+
+# Dockerizar
+## docker build --tag=turnos:latest .
