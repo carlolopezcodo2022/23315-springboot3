@@ -10,3 +10,6 @@
 
 # Dockerizar
 ## docker build --tag=turnos:latest .
+
+# Bcrypassword generator
+## https://bcrypt.online/?plain_text=secret&cost_factor=10
