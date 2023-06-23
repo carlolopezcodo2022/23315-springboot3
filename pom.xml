@@ -78,6 +78,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <!-- necesario para javax.xml.bind.DatatypeConverter: io.jsonwebtoken.impl.Base64Codec.decode -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.4.0-b180830.0359</version>
+        </dependency>
 	</dependencies>
 
 	<build>
