@@ -1,0 +1,14 @@
+package ar.com.codoacodo.security;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class AuthenticationRequest {
+
+	private String useraname;
+	private String password;
+}
