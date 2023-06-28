@@ -20,7 +20,7 @@ public class UserSecurity implements UserDetails{
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.user.getRoles()
 			.stream()
-			.map(u -> u.getRol())//[ADMIN,USER,SUPERBLA]
+			.map(u -> u.getRol())//[ROLE_ADMIN,ROLE_USER,ROLE_SUPERBLA]
 			.map(SimpleGrantedAuthority::new) //method reference
 			.toList();
 	}

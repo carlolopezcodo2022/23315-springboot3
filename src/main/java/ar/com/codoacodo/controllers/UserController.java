@@ -1,9 +1,12 @@
 package ar.com.codoacodo.controllers;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.codoacodo.domain.Role;
 import ar.com.codoacodo.domain.User;
 import ar.com.codoacodo.dto.UserDTO;
 import ar.com.codoacodo.dto.UserRequestDTO;
 import ar.com.codoacodo.dto.UserRequestPutDTO;
 import ar.com.codoacodo.dto.UserResponseDTO;
-import ar.com.codoacodo.dto.reqres.ListResource;
 import ar.com.codoacodo.services.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +69,7 @@ public class UserController {
 	}
 	
 	@PostMapping()
+	@PreAuthorize(value = "hasAuthority('ROLE_ADMIN')")
 	public ResponseEntity<UserResponseDTO> createUser(
 			@RequestBody UserRequestDTO request
 		)  {
@@ -82,11 +86,18 @@ public class UserController {
 		
 		//sino lo crea
 		//validacion!!!
+		//["1","2","3"]
+		Set<Role> rolesDelUsuario = request.getRoles()
+			.stream()
+			.map(r -> Role.builder().id(Long.parseLong(r)).build())
+			.collect(Collectors.toSet());
+		
 		User newUser = User.builder()
 				.username(request.getUsername())
-				.password(request.getPassword())
+				.password(new BCryptPasswordEncoder().encode(request.getPassword()))
+				.roles(rolesDelUsuario)
 				.build();
-				
+		
 		this.userService.crearUser(newUser);
 		
 		UserResponseDTO response = UserResponseDTO.builder()

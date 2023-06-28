@@ -1,7 +1,5 @@
 package ar.com.codoacodo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,4 +25,8 @@ public class Role {
 	
 	@Column(name="role",length = 50,unique = true)
 	private String rol;
+	
+	public Role(Long id) {
+		this.id = id;
+	}
 }
