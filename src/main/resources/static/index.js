@@ -1,33 +1,70 @@
 const url = 'http://localhost:8081';
-
-const getToken = () => {
+//main UI -> infra -> applica > domain
+const getToken = async () => {
     //pedir un token a una api
     ///api/v1/auth
-    const data = {
-        username : document.getElementById('username').value,
-        password : document.getElementById('password').value
-    }
-    //algo nativo de los browser para  hacer peticiones asincrónicas
-    fetch(`${url}/api/v1/auth/authenticate`,{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.text())
-        .then(data => console.log(data));
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    //conocer un caso de uso
+    const loginUseCase = loginUC(
+        loginRepository()
+    );
+
+    const jwt = await loginUseCase(username,password);
+
+    localStorage.setItem('jwt',JSON.stringify(jwt));
+
+    alert(JSON.stringify(jwt));
+
 }
 
-const findUsers = () => {
+const findUsers = async () => {
     //pedir un token a una api
     ///api/v1/auth
+    debugger;
+    const jwtInLS = localStorage.getItem('jwt');//string!!!!
+    const jwtObj = JSON.parse(jwtInLS);//obj
 
     //algo nativo de los browser para  hacer peticiones asincrónicas
-    fetch(`${url}/user`)
-        .then(response => response.json())
-        .then(data => console.log(data));
+    console.log(`${jwtObj.type} ${jwtObj.jwt}`);
+    const res = await fetch(`${url}/user`,{
+        method: 'GET',
+        headers: {
+            Authorization: `${jwtObj.type} ${jwtObj.jwt}`
+        }
+    }) ;
+    
+    const usuarios = await res.json();
+    document.getElementById('listado').innerHTML = Userlist(usuarios);
+}
+
+function Userlist(usuarios) {
+    const table = `<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">username</th>
+        <th scope="col">password</th>
+        <th scope="col">roles</th>
+      </tr>
+    </thead>
+    <tbody>
+        ${usuarios.map( x => UserRow(x)).join(' ')}
+    </tbody>
+  </table>`;
+  return table;
+}
+
+function UserRow(usuario) {
+    return `<tr>
+        <th scope="row">${usuario.username}</th>
+        <td>${usuario.password}</td>
+        <td>${JSON.stringify(usuario.roles)}</td>
+      </tr>`;
 }
 
 const btn = document.getElementById('btn-gettoken');
 btn.addEventListener('click',getToken);
+
+const btnListado = document.getElementById('btn-getListado');
+btnListado.addEventListener('click',findUsers);
