@@ -14,7 +14,10 @@ import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+@Tag(name = "Resource", description = "Resource management APIs")
 
 @RestController
 @RequestMapping("/resource")
@@ -24,7 +27,7 @@ public class ResourceController {
 	@Value(value = "${ENDPOINT_REQ_RES}")
 	private String apiEndpoint;
 	
-	@GetMapping()
+	@GetMapping(produces = "application/json")
 	public ResponseEntity<ListResource> findAll() {
 		
 		/*RestTemplate restTemplate = new RestTemplate();

@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+@Tag(name = "Auth", description = "Auth management APIs")
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,6 +29,7 @@ public class AuthController {
 
     private final JwtUtils jwtUtils;
     
+    @Operation(summary = "Authenticate an User", tags = { "auth", "post" })
 	@PostMapping("/authenticate")
 	public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request,
 			HttpServletResponse response) {

@@ -55,8 +55,7 @@ public class UserController {
 			@ApiResponse(
 					responseCode = "200", 
 					content = { 
-							@Content(schema = @Schema(implementation = UserDTO.class), 
-									mediaType = "application/json") 
+							@Content(schema = @Schema(implementation = UserDTO.class), mediaType = "application/json") 
 					}
 			),
 			@ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
@@ -83,8 +82,7 @@ public class UserController {
 		return ResponseEntity.ok(user);
 	}
 
-	@Operation(summary = "Create a new User", 
-			tags = { "users", "post" })
+	@Operation(summary = "Create a new User", tags = { "users", "post" })
 	@ApiResponses({
 			@ApiResponse(responseCode = "201", content = {
 					@Content(schema = @Schema(implementation = UserResponseDTO.class), mediaType = "application/json") }),
